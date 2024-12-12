@@ -13,32 +13,60 @@ FOREIGN KEY (Mgr_ssn) REFERENCES EMPLOYEE(Ssn) );
 
 ---------------------------------------------------------------
 
-CREATE TABLE SPONSOR (
+CREATE TABLE REFEREE (
   id INT NOT NULL,
-  name VARCHAR(50) NOT NULL,
-  events_sponsored INT DEFAULT 0, -- Create a trigger to automatically update this field
-
-  PRIMARY KEY (id),
-)
-
-
-CREATE TABLE LOCATION (
-  id INT NOT NULL,
-  country VARCHAR(50),
-  city VARCHAR(50),
+  nationality VARCHAR(50),
+  first_name VARCHAR(50),
+  last_name VARCHAR(50)
 
   PRIMARY KEY (id)
 )
 
 
+CREATE TABLE FIGHTER (
+  id INT NOT NULL,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  nationality VARCHAR(50),
+  weight INT, 
+  height INT,
+  reach INT,
+  stance INT,
+  ko_wins INT,
+  sub_wins INT,
+  date_of_birth DATE,
+
+  PRIMARY KEY (id)
+)
+
+
+CREATE TABLE SPONSOR (
+  id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  events_sponsored INT DEFAULT 0, -- Create a trigger to automatically update this field
+
+  PRIMARY KEY (id)
+);
+
+
 CREATE TABLE CAGE (
   id INT NOT NULL,
   capacity INT,
-  location_id INT NOT NULL,
+  country VARCHAR(50),
+  city VARCHAR(50),
 
-  PRIMARY KEY (id),
-  FOREIGN KEY (location_id) REFERENCES LOCATION(id)
-)
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE COMMENTATOR (
+  id INT NOT NULL,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  year_joined DATE DEFAULT '2024-12-12',
+
+  PRIMARY KEY(id)
+);
 
 
 CREATE TABLE EVENT (
@@ -51,12 +79,7 @@ CREATE TABLE EVENT (
   PRIMARY KEY (id),
   FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id),
   FOREIGN KEY (cage_id) REFERENCES CAGE(id)
-)
-
-
-CREATE TABLE COMMENTATOR (
-  
-) 
+);
 
 
 CREATE TABLE HOSTS (
@@ -68,8 +91,44 @@ CREATE TABLE HOSTS (
   PRIMARY KEY (event_id, commentator_1_id,
    commentator_2_id, commentator_3_id),
 
-   FOREIGN KEY (commentator_1_id) REFERENCES C 
+  FOREIGN KEY (commentator_1_id)
+   REFERENCES COMMENTATOR(id),
+  FOREIGN KEY (commentator_2_id)
+   REFERENCES COMMENTATOR(id),
+  FOREIGN KEY (commentator_3_id)
+   REFERENCES COMMENTATOR(id)
+);
+
+
+CREATE TABLE FIGHT (
+  id INT NOT NULL,
+  event_date DATE,
+  weight_class ENUM('feather_weight', 'light_weight',
+    'middle_weight', 'light_heavy_weight', 'heavy_weight'),
+  title_bout BOOL DEFAULT FALSE,
+  blue_id INT NOT NULL,
+  red_id INT NOT NULL,
+  ref_id INT NOT NULL DEFAULT 1,
+  event_id INT NOT NULL,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (blue_id) REFERENCES FIGHTER(id),
+  FOREIGN KEY (red_id) REFERENCES FIGHTER(id),
+  FOREIGN KEY (ref_id) REFERENCES REFEREE(id),
+  FOREIGN KEY (event_id) REFERENCES EVENT(id)
 )
 
-INSERT INTO
-;
+
+CREATE TABLE BET (
+  id INT NOT NULL,
+  blue_by_sub DECIMAL(3, 2),
+  blue_by_ko DECIMAL(3, 2),
+  blue_win DECIMAL(3, 2),
+  red_by_sub DECIMAL(3, 2),
+  red_by_ko DECIMAL(3, 2),
+  red_win DECIMAL(3, 2),
+  fight_id INT NOT NULL,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (fight_id) REFERENCES FIGHT(id)
+)

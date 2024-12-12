@@ -1,12 +1,14 @@
 311
 
 Tables:
-	1. event
-	2. fight (foreign keys: blue_id, red_id)
-	3. cage
-	4. fighter
-	5. bet (foreign key: fight(id))
-	6. referee
-	7. commentator
-	8. sponsor
-	9. hosts (event, commentator1, 2, ...)
+	1. event DONE
+	2. fight (foreign keys: blue_id, red_id) DONE
+	3. cage DONE
+	4. fighter DONE
+	5. bet (foreign key: fight(id)) DONE
+	6. referee DONE
+	7. commentator DONE
+	8. sponsor DONE
+	9. hosts (event, commentator1, 2, ...) DONE
+	10. (optional) weight_division 
+
