@@ -17,10 +17,10 @@ CREATE TABLE REFEREE (
   id INT NOT NULL,
   nationality VARCHAR(50),
   first_name VARCHAR(50),
-  last_name VARCHAR(50)
+  last_name VARCHAR(50),
 
   PRIMARY KEY (id)
-)
+);
 
 
 CREATE TABLE FIGHTER (
@@ -37,7 +37,7 @@ CREATE TABLE FIGHTER (
   date_of_birth DATE,
 
   PRIMARY KEY (id)
-)
+);
 
 
 CREATE TABLE SPONSOR (
@@ -116,7 +116,7 @@ CREATE TABLE FIGHT (
   FOREIGN KEY (red_id) REFERENCES FIGHTER(id),
   FOREIGN KEY (ref_id) REFERENCES REFEREE(id),
   FOREIGN KEY (event_id) REFERENCES EVENT(id)
-)
+);
 
 
 CREATE TABLE BET (
@@ -131,4 +131,4 @@ CREATE TABLE BET (
 
   PRIMARY KEY (id),
   FOREIGN KEY (fight_id) REFERENCES FIGHT(id)
-)
+);
