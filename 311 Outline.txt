@@ -1,0 +1,12 @@
+311
+
+Tables:
+	1. event
+	2. fight (foreign keys: blue_id, red_id)
+	3. cage
+	4. fighter
+	5. bet (foreign key: fight(id))
+	6. referee
+	7. commentator
+	8. sponsor
+	9. hosts (event, commentator1, 2, ...)
