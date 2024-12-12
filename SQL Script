@@ -1,0 +1,75 @@
+SQL Script
+
+Reference:
+
+CREATE TABLE DEPARTMENT
+( Dname           VARCHAR(15)       NOT NULL,
+  Dnumber         INT               NOT NULL,
+  Mgr_ssn         CHAR(9)           NOT NULL,
+  Mgr_start_date  DATE,
+PRIMARY KEY (Dnumber),
+UNIQUE      (Dname),
+FOREIGN KEY (Mgr_ssn) REFERENCES EMPLOYEE(Ssn) );
+
+---------------------------------------------------------------
+
+CREATE TABLE SPONSOR (
+  id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  events_sponsored INT DEFAULT 0, -- Create a trigger to automatically update this field
+
+  PRIMARY KEY (id),
+)
+
+
+CREATE TABLE LOCATION (
+  id INT NOT NULL,
+  country VARCHAR(50),
+  city VARCHAR(50),
+
+  PRIMARY KEY (id)
+)
+
+
+CREATE TABLE CAGE (
+  id INT NOT NULL,
+  capacity INT,
+  location_id INT NOT NULL,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (location_id) REFERENCES LOCATION(id)
+)
+
+
+CREATE TABLE EVENT (
+  id INT NOT NULL,
+  date DATE NOT NULL,
+  sponsor_id INT,
+  sponsor_amount INT,
+  cage_id INT,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id),
+  FOREIGN KEY (cage_id) REFERENCES CAGE(id)
+)
+
+
+CREATE TABLE COMMENTATOR (
+  
+) 
+
+
+CREATE TABLE HOSTS (
+  event_id INT NOT NULL,
+  commentator_1_id INT,
+  commentator_2_id INT,
+  commentator_3_id INT,
+
+  PRIMARY KEY (event_id, commentator_1_id,
+   commentator_2_id, commentator_3_id),
+
+   FOREIGN KEY (commentator_1_id) REFERENCES C 
+)
+
+INSERT INTO
+;
