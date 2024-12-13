@@ -31,7 +31,7 @@ CREATE TABLE FIGHTER (
   weight INT, 
   height INT,
   reach INT,
-  stance INT,
+  stance VARCHAR(50),
   ko_wins INT,
   sub_wins INT,
   date_of_birth DATE,
