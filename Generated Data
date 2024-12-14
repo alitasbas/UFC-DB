@@ -1,0 +1,130 @@
+
+-- Table: DEPARTMENT
+INSERT INTO DEPARTMENT (Dname, Dnumber, Mgr_ssn, Mgr_start_date) VALUES
+('HR', 1, '123456789', '2020-01-01'),
+('IT', 2, '234567890', '2018-03-15'),
+('Finance', 3, '345678901', '2019-07-10'),
+('Marketing', 4, '456789012', '2021-05-20'),
+('Sales', 5, '567890123', '2017-09-05'),
+('Operations', 6, '678901234', '2020-11-11'),
+('Legal', 7, '789012345', '2018-02-02'),
+('Research', 8, '890123456', '2022-06-01'),
+('Development', 9, '901234567', '2021-08-12'),
+('Admin', 10, '012345678', '2019-12-20');
+
+-- Table: REFEREE
+INSERT INTO REFEREE (id, nationality, first_name, last_name) VALUES
+(1, 'USA', 'John', 'Smith'),
+(2, 'Canada', 'Michael', 'Brown'),
+(3, 'UK', 'Chris', 'Taylor'),
+(4, 'Australia', 'David', 'Lee'),
+(5, 'Brazil', 'Carlos', 'Silva'),
+(6, 'Japan', 'Hiro', 'Tanaka'),
+(7, 'Russia', 'Igor', 'Ivanov'),
+(8, 'Germany', 'Hans', 'Muller'),
+(9, 'France', 'Pierre', 'Dubois'),
+(10, 'Mexico', 'Luis', 'Garcia');
+
+-- Table: FIGHTER
+INSERT INTO FIGHTER (id, first_name, last_name, nationality, weight, height, reach, stance, ko_wins, sub_wins, date_of_birth) VALUES
+(1, 'Connor', 'McGregor', 'Ireland', 155, 69, 74, 'Orthodox', 22, 6, '1988-07-14'),
+(2, 'Khabib', 'Nurmagomedov', 'Russia', 155, 70, 70, 'Orthodox', 29, 1, '1988-09-20'),
+(3, 'Jon', 'Jones', 'USA', 205, 76, 84, 'Orthodox', 26, 4, '1987-07-19'),
+(4, 'Israel', 'Adesanya', 'Nigeria', 185, 76, 80, 'Switch', 23, 0, '1989-07-22'),
+(5, 'Stipe', 'Miocic', 'Croatia', 240, 76, 80, 'Orthodox', 20, 2, '1982-08-19'),
+(6, 'Francis', 'Ngannou', 'Cameroon', 260, 76, 83, 'Orthodox', 17, 0, '1986-09-05'),
+(7, 'Amanda', 'Nunes', 'Brazil', 145, 68, 69, 'Orthodox', 21, 3, '1988-05-30'),
+(8, 'Valentina', 'Shevchenko', 'Kyrgyzstan', 125, 65, 67, 'Southpaw', 23, 0, '1988-03-07'),
+(9, 'Jose', 'Aldo', 'Brazil', 145, 67, 70, 'Orthodox', 28, 1, '1986-09-09'),
+(10, 'Henry', 'Cejudo', 'USA', 135, 64, 67, 'Orthodox', 16, 0, '1987-02-09');
+
+-- Table: SPONSOR
+INSERT INTO SPONSOR (id, name, events_sponsored) VALUES
+(1, 'Monster Energy', 10),
+(2, 'Reebok', 15),
+(3, 'Adidas', 8),
+(4, 'Nike', 12),
+(5, 'Under Armour', 7),
+(6, 'Puma', 9),
+(7, 'Everlast', 6),
+(8, 'Gatorade', 14),
+(9, 'Coca Cola', 11),
+(10, 'Pepsi', 13);
+
+-- Table: CAGE
+INSERT INTO CAGE (id, capacity, country, city) VALUES
+(1, 15000, 'USA', 'Las Vegas'),
+(2, 12000, 'Canada', 'Toronto'),
+(3, 18000, 'UK', 'London'),
+(4, 14000, 'Australia', 'Sydney'),
+(5, 20000, 'Brazil', 'Rio de Janeiro'),
+(6, 17000, 'Japan', 'Tokyo'),
+(7, 13000, 'Russia', 'Moscow'),
+(8, 16000, 'Germany', 'Berlin'),
+(9, 11000, 'France', 'Paris'),
+(10, 12500, 'Mexico', 'Mexico City');
+
+-- Table: COMMENTATOR
+INSERT INTO COMMENTATOR (id, first_name, last_name, year_joined) VALUES
+(1, 'Joe', 'Rogan', '1997-01-01'),
+(2, 'Daniel', 'Cormier', '2018-01-01'),
+(3, 'Jon', 'Anik', '2011-01-01'),
+(4, 'Michael', 'Bisping', '2019-01-01'),
+(5, 'Dominick', 'Cruz', '2016-01-01'),
+(6, 'Paul', 'Felder', '2020-01-01'),
+(7, 'Laura', 'Sanko', '2021-01-01'),
+(8, 'Kenny', 'Florian', '2009-01-01'),
+(9, 'Brian', 'Stann', '2012-01-01'),
+(10, 'John', 'Gooden', '2015-01-01');
+
+-- Table: EVENT
+INSERT INTO EVENT (id, date, sponsor_id, sponsor_amount, cage_id) VALUES
+(1, '2023-12-01', 1, 50000, 1),
+(2, '2023-11-20', 2, 60000, 2),
+(3, '2023-10-15', 3, 40000, 3),
+(4, '2023-09-05', 4, 70000, 4),
+(5, '2023-08-10', 5, 30000, 5),
+(6, '2023-07-22', 6, 55000, 6),
+(7, '2023-06-30', 7, 45000, 7),
+(8, '2023-05-18', 8, 50000, 8),
+(9, '2023-04-12', 9, 65000, 9),
+(10, '2023-03-08', 10, 35000, 10);
+
+-- Table: HOSTS
+INSERT INTO HOSTS (event_id, commentator_1_id, commentator_2_id, commentator_3_id) VALUES
+(1, 1, 2, 3),
+(2, 4, 5, 6),
+(3, 7, 8, 9),
+(4, 10, 1, 2),
+(5, 3, 4, 5),
+(6, 6, 7, 8),
+(7, 9, 10, 1),
+(8, 2, 3, 4),
+(9, 5, 6, 7),
+(10, 8, 9, 10);
+
+-- Table: FIGHT
+INSERT INTO FIGHT (id, event_date, weight_class, title_bout, blue_id, red_id, ref_id, event_id) VALUES
+(1, '2023-12-01', 'light_weight', TRUE, 1, 2, 1, 1),
+(2, '2023-11-20', 'middle_weight', FALSE, 3, 4, 2, 2),
+(3, '2023-10-15', 'heavy_weight', TRUE, 5, 6, 3, 3),
+(4, '2023-09-05', 'feather_weight', FALSE, 7, 8, 4, 4),
+(5, '2023-08-10', 'light_heavy_weight', TRUE, 9, 10, 5, 5),
+(6, '2023-07-22', 'middle_weight', FALSE, 2, 3, 6, 6),
+(7, '2023-06-30', 'feather_weight', TRUE, 4, 5, 7, 7),
+(8, '2023-05-18', 'light_weight', FALSE, 6, 7, 8, 8),
+(9, '2023-04-12', 'heavy_weight', TRUE, 8, 9, 9, 9),
+(10, '2023-03-08', 'light_heavy_weight', FALSE, 10, 1, 10, 10);
+
+-- Table: BET
+INSERT INTO BET (id, blue_by_sub, blue_by_ko, blue_win, red_by_sub, red_by_ko, red_win, fight_id) VALUES
+(1, 0.20, 0.30, 0.50, 0.15, 0.25, 0.60, 1),
+(2, 0.25, 0.35, 0.40, 0.20, 0.30, 0.50, 2),
+(3, 0.30, 0.40, 0.30, 0.25, 0.35, 0.40, 3),
+(4, 0.18, 0.28, 0.54, 0.14, 0.24, 0.62, 4),
+(5, 0.22, 0.32, 0.46, 0.18, 0.28, 0.54, 5),
+(6, 0.27, 0.37, 0.36, 0.22, 0.32, 0.46, 6),
+(7, 0.19, 0.29, 0.52, 0.15, 0.25, 0.60, 7),
+(8, 0.23, 0.33, 0.44, 0.19, 0.29, 0.52, 8),
+(9, 0.21, 0.31, 0.48, 0.17, 0.27, 0.56, 9),
+(10, 0.26, 0.36, 0.38, 0.21, 0.31, 0.48, 10);
