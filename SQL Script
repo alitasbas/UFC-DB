@@ -1,17 +1,4 @@
-SQL Script
-
-Reference:
-
-CREATE TABLE DEPARTMENT
-( Dname           VARCHAR(15)       NOT NULL,
-  Dnumber         INT               NOT NULL,
-  Mgr_ssn         CHAR(9)           NOT NULL,
-  Mgr_start_date  DATE,
-PRIMARY KEY (Dnumber),
-UNIQUE      (Dname),
-FOREIGN KEY (Mgr_ssn) REFERENCES EMPLOYEE(Ssn) );
-
----------------------------------------------------------------
+SQL Table Creation Script
 
 CREATE TABLE REFEREE (
   id INT NOT NULL,
