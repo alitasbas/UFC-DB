@@ -1,16 +1,4 @@
-
--- Table: DEPARTMENT
-INSERT INTO DEPARTMENT (Dname, Dnumber, Mgr_ssn, Mgr_start_date) VALUES
-('HR', 1, '123456789', '2020-01-01'),
-('IT', 2, '234567890', '2018-03-15'),
-('Finance', 3, '345678901', '2019-07-10'),
-('Marketing', 4, '456789012', '2021-05-20'),
-('Sales', 5, '567890123', '2017-09-05'),
-('Operations', 6, '678901234', '2020-11-11'),
-('Legal', 7, '789012345', '2018-02-02'),
-('Research', 8, '890123456', '2022-06-01'),
-('Development', 9, '901234567', '2021-08-12'),
-('Admin', 10, '012345678', '2019-12-20');
+SQL Data Insertion Script
 
 -- Table: REFEREE
 INSERT INTO REFEREE (id, nationality, first_name, last_name) VALUES
