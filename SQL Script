@@ -1,4 +1,4 @@
-SQL Table Creation Script
+-- SQL Table Creation Script
 
 CREATE TABLE REFEREE (
   id INT NOT NULL,
