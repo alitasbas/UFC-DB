@@ -144,7 +144,7 @@ INSERT INTO COMMENTATOR (id, first_name, last_name, year_joined) VALUES
 (10, 'Frank', 'Mir', '2006-01-01'),
 (11, 'Dan', 'Hardy', '2010-01-01'),
 (12, 'Brian', 'Stann', '2012-01-01'),
-(13, 'Sean', 'O'Connell', '2015-01-01'),
+(13, 'Sean', 'O''Connell', '2015-01-01'),
 (14, 'Robin', 'Black', '2016-01-01'),
 (15, 'Laura', 'Sanko', '2022-01-01'),
 (16, 'Megan', 'Olivi', '2015-01-01'),
