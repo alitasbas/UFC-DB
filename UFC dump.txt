@@ -135,12 +135,10 @@ AFTER UPDATE ON EVENT
 FOR EACH ROW
 BEGIN
     IF OLD.sponsor_id != NEW.sponsor_id THEN
-        -- Decrement the old referee's count
         UPDATE SPONSOR
         SET events_sponsored = events_sponsored - 1
         WHERE id = OLD.sponsor_id;
 
-        -- Increment the new referee's count
         UPDATE SPONSOR
         SET events_sponsored = events_sponsored + 1
         WHERE id = NEW.sponsor_id;
