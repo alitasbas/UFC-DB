@@ -28,7 +28,7 @@ CREATE TABLE FIGHTER (
 CREATE TABLE SPONSOR (
   id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  events_sponsored INT DEFAULT 0, -- Create a trigger to update this field automatically
+  events_sponsored INT DEFAULT 0,
 
   PRIMARY KEY (id)
 );
