@@ -30,7 +30,7 @@ CREATE TABLE FIGHTER (
 CREATE TABLE SPONSOR (
   id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  events_sponsored INT DEFAULT 0, -- Create a trigger to automatically update this field
+  events_sponsored INT DEFAULT 0, -- Create a trigger to update this field automatically
 
   PRIMARY KEY (id)
 );
@@ -78,6 +78,8 @@ CREATE TABLE HOSTS (
   PRIMARY KEY (event_id, commentator_1_id,
    commentator_2_id, commentator_3_id),
 
+  FOREIGN KEY (event_id)
+    REFERENCES EVENT(id),
   FOREIGN KEY (commentator_1_id)
    REFERENCES COMMENTATOR(id),
   FOREIGN KEY (commentator_2_id)
