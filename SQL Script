@@ -75,13 +75,12 @@ CREATE TABLE IF NOT EXISTS HOSTS (
   commentator_2_id INT,
   commentator_3_id INT,
 
-  PRIMARY KEY (event_id, commentator_1_id,
-   commentator_2_id, commentator_3_id),
+  PRIMARY KEY (event_id, commentator_1_id),
 
   FOREIGN KEY (event_id)
     REFERENCES EVENT(id) ON DELETE CASCADE,
   FOREIGN KEY (commentator_1_id)
-   REFERENCES COMMENTATOR(id) ON DELETE SET NULL,
+   REFERENCES COMMENTATOR(id) ON DELETE CASCADE,
   FOREIGN KEY (commentator_2_id)
    REFERENCES COMMENTATOR(id) ON DELETE SET NULL,
   FOREIGN KEY (commentator_3_id)
@@ -97,7 +96,7 @@ CREATE TABLE IF NOT EXISTS FIGHT (
   title_bout BOOL DEFAULT FALSE,
   blue_id INT NOT NULL,
   red_id INT NOT NULL,
-  ref_id INT NOT NULL DEFAULT 1,
+  ref_id INT DEFAULT 1,
   event_id INT NOT NULL,
 
   PRIMARY KEY (id),
