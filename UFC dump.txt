@@ -28,7 +28,7 @@ CREATE TABLE FIGHTER (
 CREATE TABLE SPONSOR (
   id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  events_sponsored INT DEFAULT 0,
+  events_sponsored INT DEFAULT 0, -- Create a trigger to update this field automatically
 
   PRIMARY KEY (id)
 );
@@ -62,8 +62,8 @@ CREATE TABLE EVENT (
   cage_id INT,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id),
-  FOREIGN KEY (cage_id) REFERENCES CAGE(id)
+  FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id) ON DELETE SET NULL,
+  FOREIGN KEY (cage_id) REFERENCES CAGE(id) ON DELETE SET NULL
 );
 
 
@@ -77,13 +77,13 @@ CREATE TABLE HOSTS (
    commentator_2_id, commentator_3_id),
 
   FOREIGN KEY (event_id)
-    REFERENCES EVENT(id),
+    REFERENCES EVENT(id) ON DELETE CASCADE,
   FOREIGN KEY (commentator_1_id)
-   REFERENCES COMMENTATOR(id),
+   REFERENCES COMMENTATOR(id) ON DELETE SET NULL,
   FOREIGN KEY (commentator_2_id)
-   REFERENCES COMMENTATOR(id),
+   REFERENCES COMMENTATOR(id) ON DELETE SET NULL,
   FOREIGN KEY (commentator_3_id)
-   REFERENCES COMMENTATOR(id)
+   REFERENCES COMMENTATOR(id) ON DELETE SET NULL
 );
 
 
@@ -99,26 +99,62 @@ CREATE TABLE FIGHT (
   event_id INT NOT NULL,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (blue_id) REFERENCES FIGHTER(id),
-  FOREIGN KEY (red_id) REFERENCES FIGHTER(id),
-  FOREIGN KEY (ref_id) REFERENCES REFEREE(id),
-  FOREIGN KEY (event_id) REFERENCES EVENT(id)
+  FOREIGN KEY (blue_id) REFERENCES FIGHTER(id) ON DELETE CASCADE,
+  FOREIGN KEY (red_id) REFERENCES FIGHTER(id) ON DELETE CASCADE,
+  FOREIGN KEY (ref_id) REFERENCES REFEREE(id) ON DELETE SET NULL,
+  FOREIGN KEY (event_id) REFERENCES EVENT(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE BET (
   id INT NOT NULL,
+  fight_id INT NOT NULL,
   blue_by_sub DECIMAL(3, 2),
   blue_by_ko DECIMAL(3, 2),
   blue_win DECIMAL(3, 2),
   red_by_sub DECIMAL(3, 2),
   red_by_ko DECIMAL(3, 2),
   red_win DECIMAL(3, 2),
-  fight_id INT NOT NULL,
 
-  PRIMARY KEY (id),
-  FOREIGN KEY (fight_id) REFERENCES FIGHT(id)
+  PRIMARY KEY (id, fight_id),
+  FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
 );
+
+
+CREATE TRIGGER after_event_insert
+AFTER INSERT ON EVENT
+FOR EACH ROW
+BEGIN
+    UPDATE SPONSOR
+    SET events_sponsored = events_sponsored + 1
+    WHERE id = NEW.sponsor_id;
+END;
+
+CREATE TRIGGER after_event_update
+AFTER UPDATE ON EVENT
+FOR EACH ROW
+BEGIN
+    IF OLD.sponsor_id != NEW.sponsor_id THEN
+        -- Decrement the old referee's count
+        UPDATE SPONSOR
+        SET events_sponsored = events_sponsored - 1
+        WHERE id = OLD.sponsor_id;
+
+        -- Increment the new referee's count
+        UPDATE SPONSOR
+        SET events_sponsored = events_sponsored + 1
+        WHERE id = NEW.sponsor_id;
+    END IF;
+END;
+
+CREATE TRIGGER after_event_delete
+AFTER DELETE ON EVENT
+FOR EACH ROW
+BEGIN
+    UPDATE SPONSOR
+    SET events_sponsored = events_sponsored - 1
+    WHERE id = OLD.sponsor_id;
+END;
 
 
 
