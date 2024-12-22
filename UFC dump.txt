@@ -1,0 +1,419 @@
+CREATE TABLE REFEREE (
+  id INT NOT NULL,
+  nationality VARCHAR(50),
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE FIGHTER (
+  id INT NOT NULL,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  nationality VARCHAR(50),
+  weight INT, 
+  height INT,
+  reach INT,
+  stance VARCHAR(50),
+  ko_wins INT,
+  sub_wins INT,
+  date_of_birth DATE,
+
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE SPONSOR (
+  id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  events_sponsored INT DEFAULT 0,
+
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE CAGE (
+  id INT NOT NULL,
+  capacity INT,
+  country VARCHAR(50),
+  city VARCHAR(50),
+
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE COMMENTATOR (
+  id INT NOT NULL,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  year_joined DATE DEFAULT '2024-12-12',
+
+  PRIMARY KEY(id)
+);
+
+
+CREATE TABLE EVENT (
+  id INT NOT NULL,
+  date DATE NOT NULL,
+  sponsor_id INT,
+  sponsor_amount INT,
+  cage_id INT,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id),
+  FOREIGN KEY (cage_id) REFERENCES CAGE(id)
+);
+
+
+CREATE TABLE HOSTS (
+  event_id INT NOT NULL,
+  commentator_1_id INT,
+  commentator_2_id INT,
+  commentator_3_id INT,
+
+  PRIMARY KEY (event_id, commentator_1_id,
+   commentator_2_id, commentator_3_id),
+
+  FOREIGN KEY (event_id)
+    REFERENCES EVENT(id),
+  FOREIGN KEY (commentator_1_id)
+   REFERENCES COMMENTATOR(id),
+  FOREIGN KEY (commentator_2_id)
+   REFERENCES COMMENTATOR(id),
+  FOREIGN KEY (commentator_3_id)
+   REFERENCES COMMENTATOR(id)
+);
+
+
+CREATE TABLE FIGHT (
+  id INT NOT NULL,
+  event_date DATE,
+  weight_class ENUM('feather_weight', 'light_weight',
+    'middle_weight', 'light_heavy_weight', 'heavy_weight'),
+  title_bout BOOL DEFAULT FALSE,
+  blue_id INT NOT NULL,
+  red_id INT NOT NULL,
+  ref_id INT NOT NULL DEFAULT 1,
+  event_id INT NOT NULL,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (blue_id) REFERENCES FIGHTER(id),
+  FOREIGN KEY (red_id) REFERENCES FIGHTER(id),
+  FOREIGN KEY (ref_id) REFERENCES REFEREE(id),
+  FOREIGN KEY (event_id) REFERENCES EVENT(id)
+);
+
+
+CREATE TABLE BET (
+  id INT NOT NULL,
+  blue_by_sub DECIMAL(3, 2),
+  blue_by_ko DECIMAL(3, 2),
+  blue_win DECIMAL(3, 2),
+  red_by_sub DECIMAL(3, 2),
+  red_by_ko DECIMAL(3, 2),
+  red_win DECIMAL(3, 2),
+  fight_id INT NOT NULL,
+
+  PRIMARY KEY (id),
+  FOREIGN KEY (fight_id) REFERENCES FIGHT(id)
+);
+
+
+
+INSERT INTO REFEREE (id, nationality, first_name, last_name) VALUES
+(1, 'USA', 'John', 'Doe'),
+(2, 'Canada', 'Mike', 'Smith'),
+(3, 'Brazil', 'Carlos', 'Silva'),
+(4, 'Japan', 'Hiro', 'Tanaka'),
+(5, 'Russia', 'Ivan', 'Petrov'),
+(6, 'UK', 'James', 'Brown'),
+(7, 'Australia', 'Steve', 'Irwin'),
+(8, 'France', 'Jean', 'Dupont'),
+(9, 'Germany', 'Hans', 'Schmidt'),
+(10, 'Mexico', 'Juan', 'Lopez'),
+(11, 'Italy', 'Luca', 'Rossi'),
+(12, 'Spain', 'Miguel', 'Garcia'),
+(13, 'China', 'Wei', 'Zhang'),
+(14, 'India', 'Raj', 'Kumar'),
+(15, 'South Korea', 'Min', 'Lee'),
+(16, 'Netherlands', 'Johan', 'De Jong'),
+(17, 'Sweden', 'Erik', 'Larsson'),
+(18, 'Norway', 'Ola', 'Hansen'),
+(19, 'Denmark', 'Niels', 'Christensen'),
+(20, 'South Africa', 'Sipho', 'Nkosi'),
+(21, 'Argentina', 'Diego', 'Martinez'),
+(22, 'Colombia', 'Luis', 'Gomez'),
+(23, 'Chile', 'Pedro', 'Fernandez'),
+(24, 'New Zealand', 'Mark', 'Taylor'),
+(25, 'Ireland', 'Liam', 'Murphy'),
+(26, 'Poland', 'Jakub', 'Nowak'),
+(27, 'Portugal', 'Joao', 'Costa'),
+(28, 'Belgium', 'Luc', 'Van Damme'),
+(29, 'Switzerland', 'Roger', 'Meier'),
+(30, 'Austria', 'Karl', 'Huber');
+
+
+INSERT INTO FIGHTER (id, first_name, last_name, nationality, weight, height, reach, stance, ko_wins, sub_wins, date_of_birth) VALUES
+(1, 'Conor', 'McGregor', 'Ireland', 155, 175, 188, 'Orthodox', 19, 1, '1988-07-14'),
+(2, 'Khabib', 'Nurmagomedov', 'Russia', 155, 178, 178, 'Orthodox', 8, 11, '1988-09-20'),
+(3, 'Israel', 'Adesanya', 'Nigeria', 185, 193, 203, 'Switch', 15, 0, '1989-07-22'),
+(4, 'Jon', 'Jones', 'USA', 205, 193, 215, 'Orthodox', 10, 6, '1987-07-19'),
+(5, 'Amanda', 'Nunes', 'Brazil', 135, 173, 175, 'Orthodox', 13, 4, '1988-05-30'),
+(6, 'Daniel', 'Cormier', 'USA', 205, 180, 183, 'Orthodox', 10, 4, '1979-03-20'),
+(7, 'Stipe', 'Miocic', 'USA', 240, 193, 203, 'Orthodox', 14, 0, '1982-08-19'),
+(8, 'Rose', 'Namajunas', 'USA', 115, 165, 165, 'Switch', 5, 6, '1992-06-29'),
+(9, 'Max', 'Holloway', 'USA', 145, 180, 175, 'Orthodox', 10, 2, '1991-12-04'),
+(10, 'Tony', 'Ferguson', 'USA', 155, 180, 193, 'Orthodox', 12, 8, '1984-02-12'),
+(11, 'Jose', 'Aldo', 'Brazil', 145, 170, 178, 'Orthodox', 17, 1, '1986-09-09'),
+(12, 'Henry', 'Cejudo', 'USA', 135, 163, 170, 'Orthodox', 7, 0, '1987-02-09'),
+(13, 'Demetrious', 'Johnson', 'USA', 125, 160, 170, 'Orthodox', 5, 11, '1986-08-13'),
+(14, 'Robert', 'Whittaker', 'Australia', 185, 180, 183, 'Orthodox', 10, 2, '1990-12-20'),
+(15, 'Francis', 'Ngannou', 'Cameroon', 265, 193, 213, 'Orthodox', 12, 0, '1986-09-05'),
+(16, 'Jorge', 'Masvidal', 'USA', 170, 180, 188, 'Orthodox', 16, 2, '1984-11-12'),
+(17, 'Colby', 'Covington', 'USA', 170, 180, 188, 'Orthodox', 4, 4, '1988-02-22'),
+(18, 'Kamaru', 'Usman', 'Nigeria', 170, 183, 193, 'Orthodox', 9, 1, '1987-05-11'),
+(19, 'Petr', 'Yan', 'Russia', 135, 170, 170, 'Orthodox', 7, 1, '1993-02-11'),
+(20, 'Aljamain', 'Sterling', 'USA', 135, 170, 183, 'Orthodox', 2, 8, '1989-07-31'),
+(21, 'TJ', 'Dillashaw', 'USA', 135, 168, 170, 'Orthodox', 8, 3, '1986-02-07'),
+(22, 'Dominick', 'Cruz', 'USA', 135, 173, 175, 'Orthodox', 7, 1, '1985-03-09'),
+(23, 'Glover', 'Teixeira', 'Brazil', 205, 188, 193, 'Orthodox', 18, 10, '1979-10-28'),
+(24, 'Jan', 'Blachowicz', 'Poland', 205, 188, 193, 'Orthodox', 10, 9, '1983-02-24'),
+(25, 'Brandon', 'Moreno', 'Mexico', 125, 170, 175, 'Orthodox', 3, 11, '1993-12-07'),
+(26, 'Alexander', 'Volkanovski', 'Australia', 145, 168, 173, 'Orthodox', 12, 3, '1988-09-29'),
+(27, 'Islam', 'Makhachev', 'Russia', 155, 178, 178, 'Orthodox', 5, 7, '1991-10-27'),
+(28, 'Charles', 'Oliveira', 'Brazil', 155, 178, 178, 'Orthodox', 10, 21, '1989-10-17'),
+(29, 'Gilbert', 'Burns', 'Brazil', 170, 178, 188, 'Orthodox', 6, 8, '1986-07-20'),
+(30, 'Dustin', 'Poirier', 'USA', 155, 175, 183, 'Orthodox', 15, 7, '1989-01-19');
+
+
+INSERT INTO SPONSOR (id, name, events_sponsored) VALUES
+(1, 'Monster Energy', 50),
+(2, 'Reebok', 30),
+(3, 'Nike', 25),
+(4, 'Adidas', 20),
+(5, 'Under Armour', 15),
+(6, 'Puma', 12),
+(7, 'Gatorade', 40),
+(8, 'Coca-Cola', 35),
+(9, 'Budweiser', 18),
+(10, 'Pepsi', 28),
+(11, 'Samsung', 22),
+(12, 'Apple', 15),
+(13, 'Microsoft', 10),
+(14, 'Dell', 8),
+(15, 'HP', 5),
+(16, 'Sony', 20),
+(17, 'LG', 12),
+(18, 'Intel', 9),
+(19, 'AMD', 7),
+(20, 'Huawei', 4),
+(21, 'Xiaomi', 3),
+(22, 'Amazon', 25),
+(23, 'Google', 30),
+(24, 'Facebook', 18),
+(25, 'Twitter', 12),
+(26, 'Instagram', 10),
+(27, 'YouTube', 20),
+(28, 'Netflix', 15),
+(29, 'Disney', 8),
+(30, 'Spotify', 5);
+
+
+INSERT INTO CAGE (id, capacity, country, city) VALUES
+(1, 20000, 'USA', 'Las Vegas'),
+(2, 18000, 'Canada', 'Toronto'),
+(3, 22000, 'Brazil', 'Rio de Janeiro'),
+(4, 15000, 'Japan', 'Tokyo'),
+(5, 25000, 'UK', 'London'),
+(6, 19000, 'Australia', 'Sydney'),
+(7, 21000, 'France', 'Paris'),
+(8, 16000, 'Germany', 'Berlin'),
+(9, 23000, 'Mexico', 'Mexico City'),
+(10, 17000, 'Italy', 'Rome'),
+(11, 24000, 'South Africa', 'Johannesburg'),
+(12, 20000, 'Russia', 'Moscow'),
+(13, 15000, 'China', 'Beijing'),
+(14, 18000, 'India', 'Mumbai'),
+(15, 22000, 'South Korea', 'Seoul'),
+(16, 20000, 'Netherlands', 'Amsterdam'),
+(17, 17000, 'Sweden', 'Stockholm'),
+(18, 15000, 'Norway', 'Oslo'),
+(19, 18000, 'Denmark', 'Copenhagen'),
+(20, 19000, 'Argentina', 'Buenos Aires'),
+(21, 21000, 'Colombia', 'Bogota'),
+(22, 22000, 'Chile', 'Santiago'),
+(23, 16000, 'New Zealand', 'Auckland'),
+(24, 23000, 'Ireland', 'Dublin'),
+(25, 19000, 'Poland', 'Warsaw'),
+(26, 24000, 'Portugal', 'Lisbon'),
+(27, 25000, 'Belgium', 'Brussels'),
+(28, 20000, 'Switzerland', 'Zurich'),
+(29, 22000, 'Austria', 'Vienna'),
+(30, 21000, 'Spain', 'Madrid');
+
+
+INSERT INTO COMMENTATOR (id, first_name, last_name, year_joined) VALUES
+(1, 'Joe', 'Rogan', '1997-01-01'),
+(2, 'Daniel', 'Cormier', '2019-01-01'),
+(3, 'Jon', 'Anik', '2011-01-01'),
+(4, 'Michael', 'Bisping', '2019-01-01'),
+(5, 'Paul', 'Felder', '2018-01-01'),
+(6, 'Dominick', 'Cruz', '2014-01-01'),
+(7, 'John', 'Gooden', '2013-01-01'),
+(8, 'Kenny', 'Florian', '2009-01-01'),
+(9, 'Randy', 'Couture', '2007-01-01'),
+(10, 'Frank', 'Mir', '2006-01-01'),
+(11, 'Dan', 'Hardy', '2010-01-01'),
+(12, 'Brian', 'Stann', '2012-01-01'),
+(13, 'Sean', 'O''Connell', '2015-01-01'),
+(14, 'Robin', 'Black', '2016-01-01'),
+(15, 'Laura', 'Sanko', '2022-01-01'),
+(16, 'Megan', 'Olivi', '2015-01-01'),
+(17, 'Karen', 'Bryant', '2010-01-01'),
+(18, 'Heidi', 'Androl', '2017-01-01'),
+(19, 'Bruce', 'Buffer', '1996-01-01'),
+(20, 'Mike', 'Goldberg', '1997-01-01'),
+(21, 'Jimmy', 'Smith', '2018-01-01'),
+(22, 'Chael', 'Sonnen', '2015-01-01'),
+(23, 'Bas', 'Rutten', '1999-01-01'),
+(24, 'Pat', 'Miletich', '2005-01-01'),
+(25, 'Gilbert', 'Melendez', '2017-01-01'),
+(26, 'Anthony', 'Smith', '2020-01-01'),
+(27, 'Michael', 'Chandler', '2023-01-01'),
+(28, 'Henry', 'Cejudo', '2022-01-01'),
+(29, 'Aljamain', 'Sterling', '2023-01-01'),
+(30, 'Daniel', 'Hooker', '2023-01-01');
+
+
+INSERT INTO EVENT (id, date, sponsor_id, sponsor_amount, cage_id) VALUES
+(1, '2024-01-01', 1, 500000, 1),
+(2, '2024-02-01', 2, 300000, 2),
+(3, '2024-03-01', 3, 400000, 3),
+(4, '2024-04-01', 4, 350000, 4),
+(5, '2024-05-01', 5, 250000, 5),
+(6, '2024-06-01', 6, 200000, 6),
+(7, '2024-07-01', 7, 450000, 7),
+(8, '2024-08-01', 8, 300000, 8),
+(9, '2024-09-01', 9, 150000, 9),
+(10, '2024-10-01', 10, 350000, 10),
+(11, '2024-11-01', 11, 200000, 11),
+(12, '2024-12-01', 12, 100000, 12),
+(13, '2025-01-01', 13, 300000, 13),
+(14, '2025-02-01', 14, 50000, 14),
+(15, '2025-03-01', 15, 600000, 15),
+(16, '2025-04-01', 16, 400000, 16),
+(17, '2025-05-01', 17, 700000, 17),
+(18, '2025-06-01', 18, 800000, 18),
+(19, '2025-07-01', 19, 900000, 19),
+(20, '2025-08-01', 20, 1000000, 20),
+(21, '2025-09-01', 21, 1100000, 21),
+(22, '2025-10-01', 22, 1200000, 22),
+(23, '2025-11-01', 23, 1300000, 23),
+(24, '2025-12-01', 24, 1400000, 24),
+(25, '2026-01-01', 25, 1500000, 25),
+(26, '2026-02-01', 26, 1600000, 26),
+(27, '2026-03-01', 27, 1700000, 27),
+(28, '2026-04-01', 28, 1800000, 28),
+(29, '2026-05-01', 29, 1900000, 29),
+(30, '2026-06-01', 30, 2000000, 30);
+
+
+INSERT INTO HOSTS (event_id, commentator_1_id, commentator_2_id, commentator_3_id) VALUES
+(1, 1, 2, 3),
+(2, 4, 5, 6),
+(3, 7, 8, 9),
+(4, 10, 11, 12),
+(5, 13, 14, 15),
+(6, 16, 17, 18),
+(7, 19, 20, 21),
+(8, 22, 23, 24),
+(9, 25, 26, 27),
+(10, 28, 29, 30),
+(11, 1, 3, 5),
+(12, 2, 4, 6),
+(13, 7, 9, 11),
+(14, 8, 10, 12),
+(15, 13, 15, 17),
+(16, 14, 16, 18),
+(17, 19, 21, 23),
+(18, 20, 22, 24),
+(19, 25, 27, 29),
+(20, 26, 28, 30),
+(21, 1, 2, 3),
+(22, 4, 5, 6),
+(23, 7, 8, 9),
+(24, 10, 11, 12),
+(25, 13, 14, 15),
+(26, 16, 17, 18),
+(27, 19, 20, 21),
+(28, 22, 23, 24),
+(29, 25, 26, 27),
+(30, 28, 29, 30);
+
+
+INSERT INTO FIGHT (id, event_date, weight_class, title_bout, blue_id, red_id, ref_id, event_id) VALUES
+(1, '2024-01-01', 'feather_weight', FALSE, 1, 2, 1, 1),
+(2, '2024-02-01', 'light_weight', TRUE, 3, 4, 2, 2),
+(3, '2024-03-01', 'middle_weight', FALSE, 5, 6, 3, 3),
+(4, '2024-04-01', 'light_heavy_weight', FALSE, 7, 8, 4, 4),
+(5, '2024-05-01', 'heavy_weight', TRUE, 9, 10, 5, 5),
+(6, '2024-06-01', 'feather_weight', FALSE, 11, 12, 6, 6),
+(7, '2024-07-01', 'light_weight', FALSE, 13, 14, 7, 7),
+(8, '2024-08-01', 'middle_weight', TRUE, 15, 16, 8, 8),
+(9, '2024-09-01', 'light_heavy_weight', FALSE, 17, 18, 9, 9),
+(10, '2024-10-01', 'heavy_weight', FALSE, 19, 20, 10, 10),
+(11, '2024-11-01', 'feather_weight', TRUE, 21, 22, 11, 11),
+(12, '2024-12-01', 'light_weight', FALSE, 23, 24, 12, 12),
+(13, '2025-01-01', 'middle_weight', FALSE, 25, 26, 13, 13),
+(14, '2025-02-01', 'light_heavy_weight', TRUE, 27, 28, 14, 14),
+(15, '2025-03-01', 'heavy_weight', FALSE, 29, 30, 15, 15),
+(16, '2025-04-01', 'feather_weight', FALSE, 1, 3, 16, 16),
+(17, '2025-05-01', 'light_weight', TRUE, 2, 4, 17, 17),
+(18, '2025-06-01', 'middle_weight', FALSE, 5, 7, 18, 18),
+(19, '2025-07-01', 'light_heavy_weight', FALSE, 6, 8, 19, 19),
+(20, '2025-08-01', 'heavy_weight', TRUE, 9, 11, 20, 20),
+(21, '2025-09-01', 'feather_weight', FALSE, 10, 12, 21, 21),
+(22, '2025-10-01', 'light_weight', FALSE, 13, 15, 22, 22),
+(23, '2025-11-01', 'middle_weight', TRUE, 14, 16, 23, 23),
+(24, '2025-12-01', 'light_heavy_weight', FALSE, 17, 19, 24, 24),
+(25, '2026-01-01', 'heavy_weight', FALSE, 18, 20, 25, 25),
+(26, '2026-02-01', 'feather_weight', TRUE, 21, 23, 26, 26),
+(27, '2026-03-01', 'light_weight', FALSE, 22, 24, 27, 27),
+(28, '2026-04-01', 'middle_weight', FALSE, 25, 27, 28, 28),
+(29, '2026-05-01', 'light_heavy_weight', TRUE, 26, 28, 29, 29),
+(30, '2026-06-01', 'heavy_weight', FALSE, 29, 30, 30, 30);
+
+
+INSERT INTO BET (id, blue_by_sub, blue_by_ko, blue_win, red_by_sub, red_by_ko, red_win, fight_id) VALUES
+(1, 0.20, 0.35, 0.45, 0.25, 0.30, 0.45, 1),
+(2, 0.25, 0.30, 0.45, 0.20, 0.35, 0.45, 2),
+(3, 0.15, 0.40, 0.45, 0.30, 0.25, 0.45, 3),
+(4, 0.35, 0.20, 0.45, 0.25, 0.30, 0.45, 4),
+(5, 0.30, 0.25, 0.45, 0.40, 0.15, 0.45, 5),
+(6, 0.20, 0.30, 0.50, 0.25, 0.25, 0.50, 6),
+(7, 0.25, 0.25, 0.50, 0.30, 0.20, 0.50, 7),
+(8, 0.40, 0.15, 0.45, 0.35, 0.10, 0.55, 8),
+(9, 0.30, 0.20, 0.50, 0.25, 0.25, 0.50, 9),
+(10, 0.25, 0.30, 0.45, 0.20, 0.35, 0.45, 10),
+(11, 0.20, 0.35, 0.45, 0.30, 0.25, 0.45, 11),
+(12, 0.15, 0.40, 0.45, 0.25, 0.30, 0.45, 12),
+(13, 0.35, 0.20, 0.45, 0.40, 0.15, 0.45, 13),
+(14, 0.40, 0.10, 0.50, 0.35, 0.15, 0.50, 14),
+(15, 0.30, 0.20, 0.50, 0.20, 0.30, 0.50, 15),
+(16, 0.25, 0.30, 0.45, 0.35, 0.25, 0.40, 16),
+(17, 0.20, 0.35, 0.45, 0.30, 0.25, 0.45, 17),
+(18, 0.25, 0.30, 0.45, 0.40, 0.15, 0.40, 18),
+(19, 0.15, 0.40, 0.45, 0.35, 0.10, 0.55, 19),
+(20, 0.20, 0.35, 0.45, 0.25, 0.30, 0.45, 20),
+(21, 0.25, 0.30, 0.45, 0.30, 0.20, 0.50, 21),
+(22, 0.30, 0.25, 0.45, 0.25, 0.25, 0.50, 22),
+(23, 0.20, 0.35, 0.45, 0.40, 0.15, 0.45, 23),
+(24, 0.25, 0.30, 0.45, 0.35, 0.25, 0.40, 24),
+(25, 0.40, 0.15, 0.45, 0.30, 0.20, 0.50, 25),
+(26, 0.35, 0.20, 0.45, 0.25, 0.30, 0.45, 26),
+(27, 0.30, 0.25, 0.45, 0.15, 0.40, 0.45, 27),
+(28, 0.20, 0.35, 0.45, 0.25, 0.30, 0.45, 28),
+(29, 0.25, 0.30, 0.45, 0.35, 0.15, 0.50, 29),
+(30, 0.20, 0.35, 0.45, 0.30, 0.25, 0.45, 30);
