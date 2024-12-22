@@ -1,6 +1,6 @@
 -- SQL Table Creation Script
 
-CREATE TABLE REFEREE (
+CREATE TABLE IF NOT EXISTS REFEREE (
   id INT NOT NULL,
   nationality VARCHAR(50),
   first_name VARCHAR(50),
@@ -10,7 +10,7 @@ CREATE TABLE REFEREE (
 );
 
 
-CREATE TABLE FIGHTER (
+CREATE TABLE IF NOT EXISTS FIGHTER (
   id INT NOT NULL,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
@@ -27,7 +27,7 @@ CREATE TABLE FIGHTER (
 );
 
 
-CREATE TABLE SPONSOR (
+CREATE TABLE IF NOT EXISTS SPONSOR (
   id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
   events_sponsored INT DEFAULT 0, -- Create a trigger to update this field automatically
@@ -36,7 +36,7 @@ CREATE TABLE SPONSOR (
 );
 
 
-CREATE TABLE CAGE (
+CREATE TABLE IF NOT EXISTS CAGE (
   id INT NOT NULL,
   capacity INT,
   country VARCHAR(50),
@@ -46,7 +46,7 @@ CREATE TABLE CAGE (
 );
 
 
-CREATE TABLE COMMENTATOR (
+CREATE TABLE IF NOT EXISTS COMMENTATOR (
   id INT NOT NULL,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
@@ -56,7 +56,7 @@ CREATE TABLE COMMENTATOR (
 );
 
 
-CREATE TABLE EVENT (
+CREATE TABLE IF NOT EXISTS EVENT (
   id INT NOT NULL,
   date DATE NOT NULL,
   sponsor_id INT,
@@ -69,7 +69,7 @@ CREATE TABLE EVENT (
 )  ENGINE=InnoDB;
 
 
-CREATE TABLE HOSTS (
+CREATE TABLE IF NOT EXISTS HOSTS (
   event_id INT NOT NULL,
   commentator_1_id INT,
   commentator_2_id INT,
@@ -89,7 +89,7 @@ CREATE TABLE HOSTS (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE FIGHT (
+CREATE TABLE IF NOT EXISTS FIGHT (
   id INT NOT NULL,
   event_date DATE,
   weight_class ENUM('feather_weight', 'light_weight',
@@ -108,7 +108,7 @@ CREATE TABLE FIGHT (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE BET (
+CREATE TABLE IF NOT EXISTS BET (
   id INT NOT NULL,
   fight_id INT NOT NULL,
   blue_by_sub DECIMAL(3, 2),
