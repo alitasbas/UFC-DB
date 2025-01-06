@@ -120,39 +120,3 @@ CREATE TABLE IF NOT EXISTS BET (
   PRIMARY KEY (id, fight_id),
   FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
-
-CREATE TRIGGER after_event_insert
-AFTER INSERT ON EVENT
-FOR EACH ROW
-BEGIN
-    UPDATE SPONSOR
-    SET events_sponsored = events_sponsored + 1
-    WHERE id = NEW.sponsor_id;
-END;
-
-CREATE TRIGGER after_event_update
-AFTER UPDATE ON EVENT
-FOR EACH ROW
-BEGIN
-    IF OLD.sponsor_id != NEW.sponsor_id THEN
-        -- Decrement the old referee's count
-        UPDATE SPONSOR
-        SET events_sponsored = events_sponsored - 1
-        WHERE id = OLD.sponsor_id;
-
-        -- Increment the new referee's count
-        UPDATE SPONSOR
-        SET events_sponsored = events_sponsored + 1
-        WHERE id = NEW.sponsor_id;
-    END IF;
-END;
-
-CREATE TRIGGER after_event_delete
-AFTER DELETE ON EVENT
-FOR EACH ROW
-BEGIN
-    UPDATE SPONSOR
-    SET events_sponsored = events_sponsored - 1
-    WHERE id = OLD.sponsor_id;
-END;
