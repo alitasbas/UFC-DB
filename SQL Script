@@ -123,8 +123,8 @@ CREATE TABLE IF NOT EXISTS BET (
 
 CREATE TABLE IF NOT EXISTS OCTAGON_GIRLS (
     girl_id INT AUTO_INCREMENT,
-    name VARCHAR(100),
-    age INT,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
     nationality VARCHAR(50),
     events_attended INT,
     PRIMARY KEY (girl_id)
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS OCTAGON_GIRLS (
 
 CREATE TABLE IF NOT EXISTS MEDICAL_REPORT (
     report_id INT AUTO_INCREMENT,
-    fighter_id INT,
-    fight_id INT,
+    fighter_id INT NOT NULL,
+    fight_id INT NOT NULL,
     injuries TEXT,
     recovery_time INT,
     PRIMARY KEY (report_id),
@@ -143,9 +143,10 @@ CREATE TABLE IF NOT EXISTS MEDICAL_REPORT (
 
 CREATE TABLE IF NOT EXISTS AUDIENCE_FEEDBACK (
     feedback_id INT AUTO_INCREMENT,
-    event_id INT,
-    rating DECIMAL(2, 1),
+    event_id INT NOT NULL,
+    rating DECIMAL(2, 1) NOT NULL,
     comments TEXT,
     PRIMARY KEY (feedback_id),
-    FOREIGN KEY (event_id) REFERENCES EVENT(card_id) ON DELETE CASCADE
+    FOREIGN KEY (event_id) REFERENCES EVENT(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
