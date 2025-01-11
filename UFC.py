@@ -7,7 +7,7 @@ mydb=mysql.connector.connect(
   database="UFC"
 )
 
-print(mydb
+print(mydb)
 
 mycursor=mydb.cursor()
 
