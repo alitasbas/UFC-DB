@@ -93,9 +93,12 @@ CREATE TABLE IF NOT EXISTS FIGHT (
   event_date DATE,
   weight_class ENUM('feather_weight', 'light_weight',
     'middle_weight', 'light_heavy_weight', 'heavy_weight'),
+wins_by ENUM('KO', 'TKO',
+    'SUB', 'DECISION'),
   title_bout BOOL DEFAULT FALSE,
   blue_id INT NOT NULL,
   red_id INT NOT NULL,
+  winner_id DEFAULT NULL,
   ref_id INT DEFAULT 1,
   event_id INT NOT NULL,
 
@@ -133,21 +136,19 @@ CREATE TABLE IF NOT EXISTS OCTAGON_GIRLS (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS MEDICAL_REPORT (
-    report_id INT AUTO_INCREMENT,
     fighter_id INT NOT NULL,
     fight_id INT NOT NULL,
     injuries TEXT,
     recovery_time INT,
-    PRIMARY KEY (report_id),
+    PRIMARY KEY (fighter_id, fight_id),
     FOREIGN KEY (fighter_id) REFERENCES FIGHTER(id) ON DELETE CASCADE,
     FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS AUDIENCE_FEEDBACK (
-    feedback_id INT AUTO_INCREMENT,
     event_id INT NOT NULL,
     rating DECIMAL(2, 1) NOT NULL,
     comments TEXT,
-    PRIMARY KEY (feedback_id),
+    PRIMARY KEY (event_id, comments),
     FOREIGN KEY (event_id) REFERENCES EVENT(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
