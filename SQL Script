@@ -98,7 +98,7 @@ wins_by ENUM('KO', 'TKO',
   title_bout BOOL DEFAULT FALSE,
   blue_id INT NOT NULL,
   red_id INT NOT NULL,
-  winner_id DEFAULT NULL,
+  winner_id INT,
   ref_id INT DEFAULT 1,
   event_id INT NOT NULL,
 
