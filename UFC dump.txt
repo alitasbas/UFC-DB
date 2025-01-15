@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS FIGHTER (
 CREATE TABLE IF NOT EXISTS SPONSOR (
   id INT NOT NULL,
   name VARCHAR(50) NOT NULL,
-  events_sponsored INT DEFAULT 0,
+  events_sponsored INT DEFAULT 0, -- Create a trigger to update this field automatically
 
   PRIMARY KEY (id)
 );
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS EVENT (
   PRIMARY KEY (id),
   FOREIGN KEY (sponsor_id) REFERENCES SPONSOR(id) ON DELETE SET NULL,
   FOREIGN KEY (cage_id) REFERENCES CAGE(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+)  ENGINE=InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS HOSTS (
@@ -91,9 +91,12 @@ CREATE TABLE IF NOT EXISTS FIGHT (
   event_date DATE,
   weight_class ENUM('feather_weight', 'light_weight',
     'middle_weight', 'light_heavy_weight', 'heavy_weight'),
+wins_by ENUM('KO', 'TKO',
+    'SUB', 'DECISION'),
   title_bout BOOL DEFAULT FALSE,
   blue_id INT NOT NULL,
   red_id INT NOT NULL,
+  winner_id INT,
   ref_id INT DEFAULT 1,
   event_id INT NOT NULL,
 
@@ -118,6 +121,48 @@ CREATE TABLE IF NOT EXISTS BET (
   PRIMARY KEY (id, fight_id),
   FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS OCTAGON_GIRL (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    nationality VARCHAR(50),
+    no_events_attended INT,
+    fight_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS MEDICAL_REPORT (
+    fighter_id INT NOT NULL,
+    fight_id INT NOT NULL,
+    injuries TEXT,
+    recovery_time INT,
+    PRIMARY KEY (fighter_id, fight_id),
+    FOREIGN KEY (fighter_id) REFERENCES FIGHTER(id) ON DELETE CASCADE,
+    FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS AUDIENCE_FEEDBACK (
+    event_id INT NOT NULL,
+    rating DECIMAL(2, 1) NOT NULL,
+    comments VARCHAR(255),
+    PRIMARY KEY (event_id, comments),
+    FOREIGN KEY (event_id) REFERENCES EVENT(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS FIGHT_ROUND_ASSISTANT (
+    fight_id INT NOT NULL,
+    round_no ENUM('1', '2', '3', '4', '5') NOT NULL,
+    girl_id INT NOT NULL,
+    
+    PRIMARY KEY (fight_id, round_no),
+    FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE,
+    FOREIGN KEY (girl_id) REFERENCES OCTAGON_GIRL(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+
 
 
 
@@ -153,7 +198,7 @@ INSERT INTO REFEREE (id, nationality, first_name, last_name) VALUES
 (29, 'Switzerland', 'Roger', 'Meier'),
 (30, 'Austria', 'Karl', 'Huber');
 
-
+-- Populating the FIGHTER table with 30 variables
 INSERT INTO FIGHTER (id, first_name, last_name, nationality, weight, height, reach, stance, ko_wins, sub_wins, date_of_birth) VALUES
 (1, 'Conor', 'McGregor', 'Ireland', 155, 175, 188, 'Orthodox', 19, 1, '1988-07-14'),
 (2, 'Khabib', 'Nurmagomedov', 'Russia', 155, 178, 178, 'Orthodox', 8, 11, '1988-09-20'),
@@ -186,7 +231,7 @@ INSERT INTO FIGHTER (id, first_name, last_name, nationality, weight, height, rea
 (29, 'Gilbert', 'Burns', 'Brazil', 170, 178, 188, 'Orthodox', 6, 8, '1986-07-20'),
 (30, 'Dustin', 'Poirier', 'USA', 155, 175, 183, 'Orthodox', 15, 7, '1989-01-19');
 
-
+-- Populating the SPONSOR table with 30 variables
 INSERT INTO SPONSOR (id, name, events_sponsored) VALUES
 (1, 'Monster Energy', 50),
 (2, 'Reebok', 30),
@@ -219,7 +264,7 @@ INSERT INTO SPONSOR (id, name, events_sponsored) VALUES
 (29, 'Disney', 8),
 (30, 'Spotify', 5);
 
-
+-- Populating the CAGE table with 30 variables
 INSERT INTO CAGE (id, capacity, country, city) VALUES
 (1, 20000, 'USA', 'Las Vegas'),
 (2, 18000, 'Canada', 'Toronto'),
@@ -252,7 +297,7 @@ INSERT INTO CAGE (id, capacity, country, city) VALUES
 (29, 22000, 'Austria', 'Vienna'),
 (30, 21000, 'Spain', 'Madrid');
 
-
+-- Populating the COMMENTATOR table with 30 variables
 INSERT INTO COMMENTATOR (id, first_name, last_name, year_joined) VALUES
 (1, 'Joe', 'Rogan', '1997-01-01'),
 (2, 'Daniel', 'Cormier', '2019-01-01'),
@@ -285,7 +330,7 @@ INSERT INTO COMMENTATOR (id, first_name, last_name, year_joined) VALUES
 (29, 'Aljamain', 'Sterling', '2023-01-01'),
 (30, 'Daniel', 'Hooker', '2023-01-01');
 
-
+-- Populating the EVENT table with 30 variables
 INSERT INTO EVENT (id, date, sponsor_id, sponsor_amount, cage_id) VALUES
 (1, '2024-01-01', 1, 500000, 1),
 (2, '2024-02-01', 2, 300000, 2),
@@ -318,7 +363,7 @@ INSERT INTO EVENT (id, date, sponsor_id, sponsor_amount, cage_id) VALUES
 (29, '2026-05-01', 29, 1900000, 29),
 (30, '2026-06-01', 30, 2000000, 30);
 
-
+-- Populating the HOSTS table with 30 variables
 INSERT INTO HOSTS (event_id, commentator_1_id, commentator_2_id, commentator_3_id) VALUES
 (1, 1, 2, 3),
 (2, 4, 5, 6),
@@ -351,7 +396,7 @@ INSERT INTO HOSTS (event_id, commentator_1_id, commentator_2_id, commentator_3_i
 (29, 25, 26, 27),
 (30, 28, 29, 30);
 
-
+-- Populating the FIGHT table with 30 variables
 INSERT INTO FIGHT (id, event_date, weight_class, title_bout, blue_id, red_id, ref_id, event_id) VALUES
 (1, '2024-01-01', 'feather_weight', FALSE, 1, 2, 1, 1),
 (2, '2024-02-01', 'light_weight', TRUE, 3, 4, 2, 2),
@@ -384,7 +429,7 @@ INSERT INTO FIGHT (id, event_date, weight_class, title_bout, blue_id, red_id, re
 (29, '2026-05-01', 'light_heavy_weight', TRUE, 26, 28, 29, 29),
 (30, '2026-06-01', 'heavy_weight', FALSE, 29, 30, 30, 30);
 
-
+-- Populating the BET table with 30 variables
 INSERT INTO BET (id, blue_by_sub, blue_by_ko, blue_win, red_by_sub, red_by_ko, red_win, fight_id) VALUES
 (1, 0.20, 0.35, 0.45, 0.25, 0.30, 0.45, 1),
 (2, 0.25, 0.30, 0.45, 0.20, 0.35, 0.45, 2),
@@ -416,3 +461,99 @@ INSERT INTO BET (id, blue_by_sub, blue_by_ko, blue_win, red_by_sub, red_by_ko, r
 (28, 0.20, 0.35, 0.45, 0.25, 0.30, 0.45, 28),
 (29, 0.25, 0.30, 0.45, 0.35, 0.15, 0.50, 29),
 (30, 0.20, 0.35, 0.45, 0.30, 0.25, 0.45, 30);
+
+INSERT INTO OCTAGON_GIRLS (name, age, nationality, no_events_attended, fight_id) VALUES
+('Anna Smith', 25, 'USA', 50, 1),
+('Maria Garcia', 30, 'Spain', 45, 2),
+('Sophia Lee', 27, 'South Korea', 60, 3),
+('Emma Brown', 24, 'Canada', 40, 4),
+('Olivia Martinez', 29, 'Mexico', 35, 5),
+('Isabella Johnson', 26, 'Australia', 55, 6),
+('Mia Davis', 28, 'New Zealand', 20, 7),
+('Ava Wilson', 23, 'England', 30, 8),
+('Charlotte Thomas', 25, 'South Africa', 25, 9),
+('Amelia White', 31, 'Ireland', 10, 10),
+('Harper Harris', 22, 'Scotland', 15, 11),
+('Evelyn Clark', 32, 'USA', 70, 12),
+('Abigail Rodriguez', 28, 'Colombia', 65, 13),
+('Emily Walker', 27, 'France', 50, 14),
+('Elizabeth Hall', 30, 'Germany', 80, 15),
+('Grace Allen', 26, 'Italy', 90, 16),
+('Victoria Young', 29, 'Brazil', 20, 17),
+('Luna King', 25, 'Argentina', 35, 18),
+('Chloe Wright', 24, 'USA', 40, 19),
+('Penelope Hill', 27, 'Japan', 30, 20),
+('Ella Scott', 31, 'China', 55, 21),
+('Nora Green', 22, 'Russia', 45, 22),
+('Scarlett Adams', 28, 'Norway', 70, 23),
+('Camila Baker', 25, 'Cuba', 50, 24),
+('Aria Perez', 29, 'Philippines', 65, 25),
+('Lillian Campbell', 26, 'Sweden', 35, 26),
+('Zoe Mitchell', 23, 'Denmark', 25, 27),
+('Hannah Carter', 30, 'Finland', 30, 28),
+('Lucy Phillips', 27, 'Netherlands', 20, 29),
+('Savannah Evans', 28, 'USA', 40, 30);
+
+INSERT INTO MEDICAL_REPORT (fighter_id, fight_id, injuries, recovery_time) VALUES
+(1, 1, 'Fractured rib, bruises', 60),
+(2, 1, 'Sprained wrist', 30),
+(3, 2, 'Concussion', 90),
+(4, 2, 'Dislocated shoulder', 120),
+(5, 3, 'Bruised knee', 20),
+(6, 3, 'Torn ligament', 150),
+(7, 4, 'Broken nose', 45),
+(8, 4, 'Bruised ribs', 30),
+(9, 5, 'Cuts and bruises', 15),
+(10, 5, 'Fractured hand', 75),
+(11, 6, 'Sprained ankle', 25),
+(12, 6, 'Pulled muscle', 20),
+(13, 7, 'Fractured collarbone', 90),
+(14, 7, 'Concussion', 60),
+(15, 8, 'Torn muscle', 100),
+(16, 8, 'Bruised ribs', 30),
+(17, 9, 'Cuts and bruises', 20),
+(18, 9, 'Broken arm', 120),
+(19, 10, 'Fractured leg', 180),
+(20, 10, 'Bruised shoulder', 40),
+(21, 11, 'Concussion', 75),
+(22, 11, 'Torn ligament', 150),
+(23, 12, 'Broken jaw', 90),
+(24, 12, 'Bruised eye', 20),
+(25, 13, 'Fractured rib', 60),
+(26, 13, 'Bruised elbow', 25),
+(27, 14, 'Sprained wrist', 30),
+(28, 14, 'Cuts and bruises', 15),
+(29, 15, 'Dislocated shoulder', 120),
+(30, 15, 'Bruised knee', 20);
+
+INSERT INTO AUDIENCE_FEEDBACK (event_id, rating, comments) VALUES
+(1, 4.5, 'Great event, well organized!'),
+(2, 3.8, 'Good but could be better.'),
+(3, 4.9, 'Amazing atmosphere and matches!'),
+(4, 4.0, 'Enjoyable event with minor issues.'),
+(5, 3.5, 'Average experience, not too exciting.'),
+(6, 4.7, 'Fantastic performances!'),
+(7, 4.2, 'Good event, enjoyable overall.'),
+(8, 3.9, 'Decent event but room for improvement.'),
+(9, 4.8, 'Outstanding! Highly recommend.'),
+(10, 4.4, 'Well executed event, great experience.'),
+(11, 3.6, 'Okay but lacked energy.'),
+(12, 4.3, 'Entertaining and well managed.'),
+(13, 4.6, 'Loved the matches and the vibe!'),
+(14, 4.1, 'Very good event, nice work!'),
+(15, 3.7, 'Mediocre event with some highlights.'),
+(16, 4.9, 'Exceptional event, truly amazing!'),
+(17, 4.2, 'Solid effort, enjoyable.'),
+(18, 3.8, 'Not bad, but could be better.'),
+(19, 4.5, 'Highly entertaining and well managed.'),
+(20, 4.0, 'Good overall experience.'),
+(21, 3.9, 'Fairly enjoyable, not too exciting.'),
+(22, 4.7, 'One of the best events I have attended!'),
+(23, 4.1, 'Nice effort, keep it up!'),
+(24, 4.3, 'Good vibes and well handled.'),
+(25, 4.8, 'Outstanding, thoroughly enjoyed!'),
+(26, 3.5, 'Below expectations, could improve.'),
+(27, 4.4, 'Great show, well put together.'),
+(28, 4.0, 'Good overall but some flaws.'),
+(29, 4.6, 'Fantastic experience, would recommend.'),
+(30, 4.2, 'Enjoyable and well done!');
