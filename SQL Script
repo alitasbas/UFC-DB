@@ -156,10 +156,9 @@ CREATE TABLE IF NOT EXISTS AUDIENCE_FEEDBACK (
 CREATE TABLE IF NOT EXISTS FIGHT_ROUND_ASSISTANTS (
     fight_id INT NOT NULL,
     girl_id INT NOT NULL,
-    ENUM('1', '2',
-    '3', '4', '5'),
+    round_id ENUM('1', '2', '3', '4', '5') NOT NULL,
     
     PRIMARY KEY (fight_id, girl_id, round_id),
     FOREIGN KEY (fight_id) REFERENCES FIGHT(id) ON DELETE CASCADE,
-    FOREIGN KEY (girl_id) REFERENCES OCTAGON_GIRL(girl_id)
+    FOREIGN KEY (girl_id) REFERENCES OCTAGON_GIRL(id)
 ) ENGINE=InnoDB;
