@@ -295,7 +295,7 @@ INSERT INTO BET (id, blue_by_sub, blue_by_ko, blue_win, red_by_sub, red_by_ko, r
 (29, 0.25, 0.30, 0.45, 0.35, 0.15, 0.50, 29),
 (30, 0.20, 0.35, 0.45, 0.30, 0.25, 0.45, 30);
 
-INSERT INTO OCTAGON_GIRLS (name, age, nationality, no_events_attended, fight_id) VALUES
+INSERT INTO OCTAGON_GIRL (name, age, nationality, no_events_attended, fight_id) VALUES
 ('Anna Smith', 25, 'USA', 50, 1),
 ('Maria Garcia', 30, 'Spain', 45, 2),
 ('Sophia Lee', 27, 'South Korea', 60, 3),
@@ -391,7 +391,7 @@ INSERT INTO AUDIENCE_FEEDBACK (event_id, rating, comments) VALUES
 (29, 4.6, 'Fantastic experience, would recommend.'),
 (30, 4.2, 'Enjoyable and well done!');
 
-INSERT INTO FIGHT_ROUND_ASSISTANTS (fight_id, round_no, girl_id)
+INSERT INTO FIGHT_ROUND_ASSISTANT (fight_id, round_no, girl_id)
 VALUES 
 (1, 1, '1'),
 (1, 2, '2'),
