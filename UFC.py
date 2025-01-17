@@ -18,18 +18,6 @@ for x mycursor:
 
 #####################################################################
 
-import MySQL.connector
-
-mydb=mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="student",
-  database="UFC"
-)
-
-print(mydb)
-
-mycursor=mydb.cursor()
 
 mycursor.execute("""
 SELECT 
@@ -49,18 +37,7 @@ for x in mycursor:
     print(x)
 
 ##########################################################################
-import MySQL.connector
 
-mydb=mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="student",
-  database="UFC"
-)
-
-print(mydb)
-
-mycursor=mydb.cursor()
 
 mycursor.execute("""
 SELECT 
